@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: neuralshelf_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: neuralshelf_db
+      MYSQL_USER: ${DB_USER:-neuralshelf}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-neuralshelf_pass}
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - neuralshelf_network
+
+  api:
+    build: .
+    container_name: neuralshelf_api
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_USER: ${DB_USER:-neuralshelf}
+      DB_PASSWORD: ${DB_PASSWORD:-neuralshelf_pass}
+      DB_HOST: mysql
+      DB_PORT: 3306
+    ports:
+      - "8002:8002"
+    networks:
+      - neuralshelf_network
+
+volumes:
+  mysql_data:
+
+networks:
+  neuralshelf_network:
+    driver: bridge
