@@ -1,0 +1,9 @@
+.env
+*.pkl
+*.keras
+*.h5
+*.sql
+mlruns/
+*.db
+__pycache__/
+*.pyc
