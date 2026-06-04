@@ -27,6 +27,17 @@ Amazon Data → MySQL → SVD Model → FastAPI REST API
 - Full Docker deployment with docker-compose
 - MLflow experiment tracking across all runs
 
+## Charts
+
+### EDA Summary
+![EDA Dashboard](eda_summary_dashboard.png)
+
+### Model Comparison
+![Model Comparison](model_comparison.png)
+
+### A/B Test Results
+![A/B Test](ab_test_results.png)
+
 ## How to Run
 1. Clone the repo
 2. Add .env file with MySQL credentials
